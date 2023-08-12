@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -25,17 +25,29 @@ namespace FiringRange
         private void OnEnable()
         {
             _input?.Enable();
+
+            _input.Player.Interact.performed += OnInteract;
         }
 
         private void OnDisable()
         {
             _input?.Disable();
+
+            _input.Player.Interact.performed -= OnInteract;
+        }
+
+
+        private void OnInteract(InputAction.CallbackContext context)
+        {
+            GameEventHandler.OnInteractPressed?.Invoke();
         }
 
         private void Update()
         {
             HandleMovementInput();
             HandleMouseLook();
+            if (_input.Player.Shoot.IsPressed())
+                OnShoot();
             //HandleSprinting();
         }
 
@@ -54,6 +66,10 @@ namespace FiringRange
             float mouseY = _look.ReadValue<Vector2>().y;
 
             GameEventHandler.OnMouseLook?.Invoke(mouseX, mouseY);
+        }
+        private void OnShoot()
+        {
+            GameEventHandler.OnShoot?.Invoke();
         }
     }
 }

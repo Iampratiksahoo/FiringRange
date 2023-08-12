@@ -5,47 +5,7 @@ namespace FiringRange
     [RequireComponent(typeof(CharacterController))]
     public class PlayerMovement : MonoBehaviour
     {
-
-        #region SerializedPublicVariables
-
-        [Header("Functional Parameters")]
-        public bool CanMove = true;
-        public bool CanSprint = true;
-        public bool CanHeadbob = true;
-
-        #endregion
-        #region SerializedPrivateVariables
-
-        [Header("Movement Parameters")]
-        [SerializeField] private float walkSpeed = 3.0f;
-        [SerializeField] private float sprintSpeed = 6.0f;
-        [SerializeField, Range(1f, 5f)] private float movementSpeedBlendTime = 1.0f;
-        [Space(10)]
-        [SerializeField] private float gravity = 30.0f;
-
-        [Header("Look Parameters")]
-        [SerializeField] private bool mouseInverted = false;
-        [SerializeField, Range(.1f, 10f)] private float lookSpeedX = 2.0f;
-        [SerializeField, Range(.1f, 10f)] private float lookSpeedY = 2.0f;
-        [SerializeField, Range(1, 180)] private float upperLookLimit = 80.0f;
-        [SerializeField, Range(1, 180)] private float lowerLookLimit = 80.0f;
-
-        [Header("Headbob Parameters")]
-        [SerializeField] private float walkBobSpeed = 14.0f;
-        [SerializeField] private float walkBobAmount = 0.025f;
-        [SerializeField] private float sprintBobSpeed = 18.0f;
-        [SerializeField] private float sprintBobAmount = 0.05f;
-        [SerializeField, Range(1f, 5f)] private float headbobSpeedBlendTime = 1.0f;
-
-
-        #endregion
-        #region PublicTrackerVariables
-        public bool IsSprinting { get; private set; } = false;
-
-        #endregion
-        #region PrivateVariables
-
-
+        [SerializeField] PlayerData PlayerData;
 
         private Camera _playerCamera;
         private CharacterController _characterController;
@@ -59,12 +19,8 @@ namespace FiringRange
 
         private float _defaultYPos = 0;
         private float _timer;
-
-        #endregion
-        #region UnityFunctions
         private void Awake()
-        {
-
+        { 
             // Get the reference of the required components
             _playerCamera = GetComponentInChildren<Camera>();
             _characterController = GetComponent<CharacterController>();
@@ -77,37 +33,34 @@ namespace FiringRange
 
         private void Start()
         {
-            _currentSpeed = walkSpeed;
+            _currentSpeed = PlayerData.WalkSpeed;
         }
 
         private void OnEnable()
         {
-            GameEventHandler.OnMove += Manager_OnMove;
-            GameEventHandler.OnMouseLook += Manager_OnMouseLook;
-            GameEventHandler.OnSprint += Manager_OnSprint;
+            GameEventHandler.OnMove += OnMove;
+            GameEventHandler.OnMouseLook += OnMouseLook;
+            GameEventHandler.OnSprint += OnSprint;
         }
 
         private void OnDisable()
         {
-            GameEventHandler.OnMove -= Manager_OnMove;
-            GameEventHandler.OnMouseLook -= Manager_OnMouseLook;
-            GameEventHandler.OnSprint -= Manager_OnSprint;
+            GameEventHandler.OnMove -= OnMove;
+            GameEventHandler.OnMouseLook -= OnMouseLook;
+            GameEventHandler.OnSprint -= OnSprint;
         }
 
         private void Update()
         {
-            if (CanMove)
+            if (PlayerData.CanMove)
             {
                 HandleHeadbob();
                 ApplyFinalMovements();
             }
         }
-
-        #endregion
-        #region CustomFunctions
-        private void Manager_OnMove(float horizontal, float vertical)
+        private void OnMove(float horizontal, float vertical)
         {
-            if (!CanMove) return;
+            if (!PlayerData.CanMove) return;
 
             // Scale the current input according to walk/run speed
             _currentInput = new Vector2(vertical, horizontal) * _currentSpeed;
@@ -122,58 +75,56 @@ namespace FiringRange
             _moveDirection.y = moveDirectionY;
         }
 
-        private void Manager_OnSprint(bool isSprinting)
+        private void OnSprint(bool isSprinting)
         {
-            if (!CanSprint || !CanMove) return;
+            if (!PlayerData.CanSprint || !PlayerData.CanMove) return;
 
-            if (IsSprinting = isSprinting)
-                _currentSpeed = Mathf.Lerp(_currentSpeed, sprintSpeed, movementSpeedBlendTime * Time.deltaTime);
-            else
-                _currentSpeed = Mathf.Lerp(_currentSpeed, walkSpeed, movementSpeedBlendTime * Time.deltaTime);
+            PlayerData.IsSprinting = isSprinting;
+
+            _currentSpeed = Mathf.Lerp(
+                _currentSpeed,
+                isSprinting ? PlayerData.SprintSpeed : PlayerData.WalkSpeed, 
+                PlayerData.MovementSpeedBlendTime * Time.deltaTime);
         }
 
-        private void Manager_OnMouseLook(float mouseX, float mouseY)
+        private void OnMouseLook(float mouseX, float mouseY)
         {
-            if (!CanMove) return;
+            if (!PlayerData.CanMove) return;
 
-            mouseY *= (mouseInverted ? -1 : 1);
+            mouseY *= (PlayerData.MouseInverted ? -1 : 1);
 
-            _rotationX -= mouseY * lookSpeedY;
-            _rotationX = Mathf.Clamp(_rotationX, -upperLookLimit, lowerLookLimit);
+            _rotationX -= mouseY * PlayerData.LookSpeedY;
+            _rotationX = Mathf.Clamp(_rotationX, -PlayerData.UpperLookLimit, PlayerData.LowerLookLimit);
             _playerCamera.transform.localRotation = Quaternion.Euler(_rotationX, 0, 0);
 
-            transform.rotation *= Quaternion.Euler(0, mouseX * lookSpeedX, 0);
+            transform.rotation *= Quaternion.Euler(0, mouseX * PlayerData.LookSpeedX, 0);
         }
 
         private void HandleHeadbob()
         {
-            if (!CanHeadbob || !_characterController.isGrounded || Mathf.Abs(_moveDirection.x) <= 0.1 || Mathf.Abs(_moveDirection.z) <= 0.1)
+            if (!PlayerData.CanHeadbob || !_characterController.isGrounded || Mathf.Abs(_moveDirection.x) <= 0.1 || Mathf.Abs(_moveDirection.z) <= 0.1)
             {
                 // Lerp back to the default head position once the player stops movement
                 _playerCamera.transform.localPosition = Vector3.Lerp(
                     _playerCamera.transform.localPosition,
                     new Vector3(_playerCamera.transform.localPosition.x, _defaultYPos, _playerCamera.transform.localPosition.z),
-                    headbobSpeedBlendTime * Time.deltaTime
-                    );
+                    PlayerData.HeadbobSpeedBlendTime * Time.deltaTime);
                 return;
             }
 
-            _timer += Time.deltaTime * (IsSprinting ? sprintBobSpeed : walkBobSpeed);
+            _timer += Time.deltaTime * (PlayerData.IsSprinting ? PlayerData.SprintBobSpeed : PlayerData.WalkBobSpeed);
             _playerCamera.transform.localPosition = new Vector3(
                 _playerCamera.transform.localPosition.x,
-                _defaultYPos + Mathf.Sin(_timer) * (IsSprinting ? sprintBobAmount : walkBobAmount),
-                _playerCamera.transform.localPosition.z
-                );
+                _defaultYPos + Mathf.Sin(_timer) * (PlayerData.IsSprinting ? PlayerData.SprintBobAmount : PlayerData.WalkBobAmount),
+                _playerCamera.transform.localPosition.z);
         }
 
         private void ApplyFinalMovements()
         {
             if (!_characterController.isGrounded)
-                _moveDirection.y -= gravity * Time.deltaTime;
+                _moveDirection.y -= PlayerData.Gravity * Time.deltaTime;
 
             _characterController.Move(_moveDirection * Time.deltaTime);
         }
-
-        #endregion
     }
 }
