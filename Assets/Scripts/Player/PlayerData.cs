@@ -20,10 +20,10 @@ namespace FiringRange
 
         [Header("Look Parameters")]
         public bool MouseInverted = false;
-        [Range(.1f, 10f)] 
-        public float LookSpeedX = 2.0f;
-        [Range(.1f, 10f)] 
-        public float LookSpeedY = 2.0f;
+        [Range(0f, 100f)] 
+        public float LookSpeedX = 1f;
+        [Range(0f, 100f)] 
+        public float LookSpeedY = 1f;
         [Range(1, 180)] 
         public float UpperLookLimit = 80.0f;
         [Range(1, 180)] 

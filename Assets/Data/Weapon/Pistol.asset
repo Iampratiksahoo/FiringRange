@@ -31,6 +31,7 @@ MonoBehaviour:
     Clip: {fileID: 8300000, guid: 9c9a246caaf83f24084e2180a5c6ec75, type: 3}
     Volume: 50
   Sway: 1
+  SwayRotation: 0
   SwayStep: 0.01
   MaxDistanceStep: 0.06
   SwayRotationStep: 4

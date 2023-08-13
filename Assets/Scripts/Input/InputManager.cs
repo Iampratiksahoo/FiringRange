@@ -11,6 +11,7 @@ namespace FiringRange
         private InputAction _look;
 
         public static Vector3 PlayerVelocity;
+        private bool _currentPauseState = false;
 
         private void Awake()
         {
@@ -18,7 +19,7 @@ namespace FiringRange
             _input = new CustomInputAction();
 
             // Assign the respective Actions
-            _locomotion = _input.Player.Locomotion;
+            _locomotion = _input.Player.Movement;
             _look = _input.Player.Look;
         }
         private void OnEnable()
@@ -28,6 +29,8 @@ namespace FiringRange
             _input.Player.Interact.performed += OnInteractPressed;
             _input.Player.Reload.performed += OnReloadPressed;
             _input.Player.Shoot.performed += OnShootNonAutomatic;
+
+            _input.Pause.Menu.performed += OnPausePressed;
         }
 
         private void OnDisable()
@@ -37,6 +40,15 @@ namespace FiringRange
             _input.Player.Interact.performed -= OnInteractPressed;
             _input.Player.Reload.performed -= OnReloadPressed;
             _input.Player.Shoot.performed -= OnShootNonAutomatic;
+
+            _input.Pause.Menu.performed -= OnPausePressed;
+        }
+
+        private void OnPausePressed(InputAction.CallbackContext context)
+        {
+            _currentPauseState = !_currentPauseState;
+
+            GameEventHandler.OnPausePressed?.Invoke(_currentPauseState);
         }
 
         private void OnReloadPressed(InputAction.CallbackContext context)

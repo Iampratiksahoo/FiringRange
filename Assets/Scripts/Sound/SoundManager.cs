@@ -74,36 +74,6 @@ namespace FiringRange
             _sfxSource.playOnAwake = false;
         }
 
-        private void OnEnable()
-        {
-            GameEventHandler.OnMusicToggled += OnMusicToggled;
-            GameEventHandler.OnSFXToggled += OnSFXToggled;
-            GameEventHandler.OnVolumeChanged += OnVolumeChanged;
-        }
-
-        private void OnDisable()
-        {
-            GameEventHandler.OnMusicToggled -= OnMusicToggled;
-            GameEventHandler.OnSFXToggled -= OnSFXToggled;
-            GameEventHandler.OnVolumeChanged -= OnVolumeChanged;
-        }
-
-        private void OnMusicToggled(bool isOn)
-        {
-            MusicIsOn = isOn;
-        }
-
-        private void OnSFXToggled(bool isOn)
-        {
-            SfxIsOn = isOn;
-        }
-
-        private void OnVolumeChanged(float volume)
-        {
-            _musicSource.volume = volume;
-            _sfxSource.volume = volume;
-        }
-
         public void PlaySoundEffect(Sound sound)
         {
             //if (!SfxIsOn) return;

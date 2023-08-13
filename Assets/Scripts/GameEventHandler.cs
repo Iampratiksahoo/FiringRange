@@ -16,15 +16,12 @@ namespace FiringRange
         public static Action OnReloadStarted;
         public static Action OnReloadCompleted;
         public static Action<int> OnBulletCountChanged;
-
         public static Action<bool> OnHoverOverWeapon;
+        public static Action<Weapon> OnWeaponEquipped;
 
         public static Action OnInteractPressed;
 
-        public static Action<Weapon> OnWeaponEquipped;
-
-        public static Action<bool> OnMusicToggled;
-        public static Action<bool> OnSFXToggled;
-        public static Action<float> OnVolumeChanged;
+        public static Action<bool> OnPausePressed;
+        public static Action<float> OnSensitivityChanged;
     }
 }

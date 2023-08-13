@@ -21,6 +21,7 @@ namespace FiringRange
 
         [Header("Sway Parameters")]
         public bool Sway = true;
+        public bool SwayRotation = true;
         public float SwayStep = 0.01f;
         public float MaxDistanceStep = 0.06f;
         public float SwayRotationStep = 4f;

@@ -103,11 +103,19 @@ namespace FiringRange
             Sway(new Vector2(lookInputX, lookInputY));
             SwayRotation(new Vector2(lookInputX, lookInputY));
             CompositePositionRotation();
+
+            // Look at the center where the Player is aiming at. 
+            Vector3 LookPosition = _playerCamera.transform.position + (_playerCamera.transform.TransformDirection(Vector3.forward) * WeaponData.Range);
+            transform.LookAt(LookPosition);
         }
 
         private void SwayRotation(Vector2 lookInput)
         {
-            if (!WeaponData.Sway) return;
+            if (!WeaponData.SwayRotation)
+            {
+                _swayEulerRot = Vector3.zero; 
+                return;
+            }
 
             Vector2 invertLook = lookInput * -WeaponData.SwayRotationStep;
             invertLook.x = Mathf.Clamp(invertLook.x, -WeaponData.MaxRotationStep, WeaponData.MaxRotationStep);

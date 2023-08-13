@@ -93,11 +93,11 @@ namespace FiringRange
 
             mouseY *= (PlayerData.MouseInverted ? -1 : 1);
 
-            _rotationX -= mouseY * PlayerData.LookSpeedY;
+            _rotationX -= mouseY * (PlayerData.LookSpeedY/10);
             _rotationX = Mathf.Clamp(_rotationX, -PlayerData.UpperLookLimit, PlayerData.LowerLookLimit);
             _playerCamera.transform.localRotation = Quaternion.Euler(_rotationX, 0, 0);
 
-            transform.rotation *= Quaternion.Euler(0, mouseX * PlayerData.LookSpeedX, 0);
+            transform.rotation *= Quaternion.Euler(0, mouseX * (PlayerData.LookSpeedX/10), 0);
         }
 
         private void HandleHeadbob()

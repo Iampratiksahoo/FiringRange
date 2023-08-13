@@ -22,14 +22,20 @@ namespace FiringRange
         {
             GameEventHandler.OnInteractPressed += OnInteract;
             GameEventHandler.OnWeaponEquipped += OnWeaponPicked;
+            GameEventHandler.OnSensitivityChanged += OnSensitivityChanged;
         }
-
         private void OnDisable()
         {
             GameEventHandler.OnInteractPressed -= OnInteract;
             GameEventHandler.OnWeaponEquipped -= OnWeaponPicked;
+            GameEventHandler.OnSensitivityChanged -= OnSensitivityChanged;
         }
 
+        private void OnSensitivityChanged(float value)
+        {
+            PlayerData.LookSpeedX = value;
+            PlayerData.LookSpeedY = value;
+        }
 
         private void Update()
         {

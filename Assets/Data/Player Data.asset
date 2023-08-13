@@ -20,8 +20,8 @@ MonoBehaviour:
   MovementSpeedBlendTime: 1
   Gravity: 30
   MouseInverted: 0
-  LookSpeedX: 0.1
-  LookSpeedY: 0.1
+  LookSpeedX: 1
+  LookSpeedY: 1
   UpperLookLimit: 80
   LowerLookLimit: 80
   WalkBobSpeed: 14
