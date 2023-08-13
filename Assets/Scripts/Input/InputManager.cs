@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -26,18 +25,26 @@ namespace FiringRange
         {
             _input?.Enable();
 
-            _input.Player.Interact.performed += OnInteract;
+            _input.Player.Interact.performed += OnInteractPressed;
+            _input.Player.Reload.performed += OnReloadPressed;
+            _input.Player.Shoot.performed += OnShootNonAutomatic;
         }
 
         private void OnDisable()
         {
             _input?.Disable();
 
-            _input.Player.Interact.performed -= OnInteract;
+            _input.Player.Interact.performed -= OnInteractPressed;
+            _input.Player.Reload.performed -= OnReloadPressed;
+            _input.Player.Shoot.performed -= OnShootNonAutomatic;
         }
 
+        private void OnReloadPressed(InputAction.CallbackContext context)
+        {
+            GameEventHandler.OnReloadPressed?.Invoke();
+        }
 
-        private void OnInteract(InputAction.CallbackContext context)
+        private void OnInteractPressed(InputAction.CallbackContext context)
         {
             GameEventHandler.OnInteractPressed?.Invoke();
         }
@@ -47,8 +54,7 @@ namespace FiringRange
             HandleMovementInput();
             HandleMouseLook();
             if (_input.Player.Shoot.IsPressed())
-                OnShoot();
-            //HandleSprinting();
+                OnShootAutomatic();
         }
 
         private void HandleMovementInput()
@@ -67,9 +73,13 @@ namespace FiringRange
 
             GameEventHandler.OnMouseLook?.Invoke(mouseX, mouseY);
         }
-        private void OnShoot()
+        private void OnShootNonAutomatic(InputAction.CallbackContext context)
         {
-            GameEventHandler.OnShoot?.Invoke();
+            GameEventHandler.OnShootNonAutomatic?.Invoke();
+        }
+        private void OnShootAutomatic()
+        {
+            GameEventHandler.OnShootAutomatic?.Invoke();
         }
     }
 }

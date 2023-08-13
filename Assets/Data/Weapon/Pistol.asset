@@ -12,16 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21b7136f9f1795e4da7987da93ef9c08, type: 3}
   m_Name: Pistol
   m_EditorClassIdentifier: 
-  Damage: 20
-  TimeBetweenShooting: 0.05
-  Spread: 0.02
+  FireRate: 0.01
   Range: 100
   ReloadTime: 1
-  TimeBetweenShots: 0
   MagazineSize: 6
   BulletPerTap: 1
   Automatic: 0
+  Laser: 1
+  MuzzleFlash: {fileID: 198719912503724044, guid: 3dd9cf2e209c504448f1c4c6835675cf, type: 3}
   BulletImpact: {fileID: 3985336294182643611, guid: ddda996959a1103468660ca9e9c91dec, type: 3}
   EnemyLayerMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 439
+  BulletFireSound:
+    Clip: {fileID: 8300000, guid: 9bd064cb834d8d14ca6a38764a9591f8, type: 3}
+    Volume: 50
+  EmptyFireSound:
+    Clip: {fileID: 8300000, guid: 9c9a246caaf83f24084e2180a5c6ec75, type: 3}
+    Volume: 50
+  Sway: 1
+  SwayStep: 0.01
+  MaxDistanceStep: 0.06
+  SwayRotationStep: 4
+  MaxRotationStep: 5
+  SwaySmooth: 10
+  SwaySmoothRot: 12

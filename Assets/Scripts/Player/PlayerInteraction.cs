@@ -9,21 +9,25 @@ namespace FiringRange
 
         private Camera _playerCamera;
         private IInteractable _currentInteractable;
+        private Transform _weaponSocket;
+        private Weapon _equippedWeapon;
 
         private void Awake()
         {
-            _playerCamera = GameObject.FindGameObjectWithTag("PlayerCamera").GetComponent<Camera>();    
+            _playerCamera = GameObject.FindGameObjectWithTag("PlayerCamera").GetComponent<Camera>();
+            _weaponSocket = transform.Find("WEAPON_SOCKET");
         }
 
         private void OnEnable()
         {
             GameEventHandler.OnInteractPressed += OnInteract;
+            GameEventHandler.OnWeaponEquipped += OnWeaponPicked;
         }
 
         private void OnDisable()
         {
             GameEventHandler.OnInteractPressed -= OnInteract;
-
+            GameEventHandler.OnWeaponEquipped -= OnWeaponPicked;
         }
 
 
@@ -62,6 +66,23 @@ namespace FiringRange
             if (_currentInteractable == null) return; 
             
             _currentInteractable.Interact();
+        }
+        private void OnWeaponPicked(Weapon weapon)
+        {
+            if(_equippedWeapon != null)
+            {
+                DropWeapon(weapon);
+            }
+
+            _equippedWeapon = weapon;
+            _equippedWeapon.transform.parent = _weaponSocket;
+            _equippedWeapon.transform.localPosition = Vector3.zero;
+            _equippedWeapon.transform.localRotation = Quaternion.identity;
+        }
+
+        private void DropWeapon(Weapon weapon)
+        {
+            _equippedWeapon.ReturnToArmory();
         }
     }
 }

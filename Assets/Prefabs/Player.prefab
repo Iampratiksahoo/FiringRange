@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &627324575
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 627324576}
+  m_Layer: 0
+  m_Name: WEAPON_SOCKET
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &627324576
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 627324575}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.31, y: 0.51, z: 0.65}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 796237535091594299}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &796237534459196369
 GameObject:
   m_ObjectHideFlags: 0
@@ -13,7 +44,7 @@ GameObject:
   - component: {fileID: 796237534459196370}
   m_Layer: 0
   m_Name: PlayerCamera
-  m_TagString: MainCamera
+  m_TagString: PlayerCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -96,6 +127,7 @@ GameObject:
   - component: {fileID: 796237535091594296}
   - component: {fileID: 796237535091594301}
   - component: {fileID: 796237535091594300}
+  - component: {fileID: 651611550}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -116,6 +148,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 796237534459196372}
+  - {fileID: 627324576}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -163,20 +196,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa006f9fcd2b2b41b0613d42033e2f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CanMove: 1
-  CanSprint: 1
-  CanHeadbob: 1
-  walkSpeed: 3
-  sprintSpeed: 6
-  movementSpeedBlendTime: 1
-  gravity: 30
-  mouseInverted: 0
-  lookSpeedX: 1
-  lookSpeedY: 1
-  upperLookLimit: 80
-  lowerLookLimit: 80
-  walkBobSpeed: 14
-  walkBobAmount: 0.025
-  sprintBobSpeed: 18
-  sprintBobAmount: 0.05
-  headbobSpeedBlendTime: 1
+  PlayerData: {fileID: 11400000, guid: 82e0d00c0f15b064d9dcc4e48c460ff2, type: 2}
+--- !u!114 &651611550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 796237535091594295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fb2dcc53543b8d4ea65cc27d768245b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerData: {fileID: 11400000, guid: 82e0d00c0f15b064d9dcc4e48c460ff2, type: 2}

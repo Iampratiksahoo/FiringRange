@@ -5,16 +5,17 @@ TagManager:
   serializedVersion: 2
   tags:
   - PlayerCamera
+  - Enemy
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Interactable
+  - 
   - Water
   - UI
-  - Enemy
-  - 
-  - 
+  - Ignore
+  - Weapon
+  - Interactable
   - 
   - 
   - 

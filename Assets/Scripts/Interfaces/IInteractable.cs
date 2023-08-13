@@ -1,5 +1,7 @@
-
-public interface IInteractable
+namespace FiringRange
 {
-    public void Interact();
+    public interface IInteractable
+    {
+        public void Interact();
+    }
 }
